@@ -8,6 +8,7 @@
 function sanitize() {
     unset GIT_CURRENT_BRANCH GIT_STATUS
     unset GIT_STAGED GIT_MODIFIED GIT_UNTRACKED GIT_DELETED
+    unset GIT_COMMITS_BEHIND GIT_COMMITS_AHEAD GIT_COMMITS_STATUS
     git rev-parse --git-dir &>/dev/null || return 1
 }
 
@@ -52,12 +53,12 @@ function parse_git_status() {
         local commits_ahead=$(echo -n "$ahead_behind_status" | awk '{print $1}')
         local commits_behind=$(echo -n "$ahead_behind_status" | awk '{print $2}')
         
-        (( ${commits_behind} > 0))  \
+        (( ${commits_behind} > 0 )) \
             && GIT_COMMITS_BEHIND="↓${commits_behind} " \
-            || GIT_COMMITS_BEHIND=""
-        (( ${commits_ahead} > 0))  \
+            && git_has_changes=1
+        (( ${commits_ahead} > 0 )) \
             && GIT_COMMITS_AHEAD="↑${commits_ahead} " \
-            || GIT_COMMITS_AHEAD=""
+            && git_has_changes=1
     fi
     GIT_COMMITS_STATUS="${GIT_COMMITS_AHEAD}${GIT_COMMITS_BEHIND}"
 
@@ -70,12 +71,12 @@ function parse_git_status() {
             && GIT_DELETED="-${deleted_files} "
         (( ${untracked_files} > 0 )) \
             && GIT_UNTRACKED="?${untracked_files}"
-        FG_SPECIAL_COLOR="${FG_YELLOW}"
+        local fg_special='%F{yellow}'
     else
-        FG_SPECIAL_COLOR="${FG_GREEN}"
+        local fg_special='%F{34}'
     fi
     
-    GIT_STATUS="${FG_SPECIAL_COLOR}"
+    GIT_STATUS="${fg_special}"
     GIT_STATUS+=" ${GIT_CURRENT_BRANCH} "
     GIT_STATUS+="${GIT_COMMITS_STATUS}"
     GIT_STATUS+="${GIT_MODIFIED}${GIT_STAGED}"
