@@ -82,6 +82,9 @@ function parse_git_status() {
     GIT_STATUS+="${GIT_MODIFIED}${GIT_STAGED}"
     GIT_STATUS+="${GIT_DELETED}${GIT_UNTRACKED}"
     GIT_STATUS+="${FG_CLR}"
+
+    # Remove trailing whitespace
+    GIT_STATUS="$(sed 's/[ ]+$//' <<<"$GIT_STATUS")"
 }
 
 ###
