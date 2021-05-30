@@ -71,9 +71,9 @@ function parse_git_status() {
             && GIT_DELETED="-${deleted_files} "
         (( ${untracked_files} > 0 )) \
             && GIT_UNTRACKED="?${untracked_files}"
-        local fg_special='%F{yellow}'
+        local fg_special=$'\e[0;33m'
     else
-        local fg_special='%F{34}'
+        local fg_special=$'\e[01;32m'
     fi
     
     GIT_STATUS="${fg_special}"
@@ -81,7 +81,7 @@ function parse_git_status() {
     GIT_STATUS+="${GIT_COMMITS_STATUS}"
     GIT_STATUS+="${GIT_MODIFIED}${GIT_STAGED}"
     GIT_STATUS+="${GIT_DELETED}${GIT_UNTRACKED}"
-    GIT_STATUS+="${FG_CLR}"
+    GIT_STATUS+=$'\e[0m'
 
     # Remove trailing whitespace
     GIT_STATUS="$(sed 's/[ ]+$//' <<<"$GIT_STATUS")"
