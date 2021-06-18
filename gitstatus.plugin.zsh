@@ -108,9 +108,9 @@ function get_differences_between_remote_and_local()
     local ahead="" behind=""
 
     (( $commits_ahead > 0 )) \
-        && ahead="↑$commits_ahead"
+        && ahead=" ↑$commits_ahead"
     (( $commits_behind > 0 )) \
-        && behind="↓$commits_behind"
+        && behind=" ↓$commits_behind "
 
     typeset -g REPLY="$ahead $behind"
     return 0
