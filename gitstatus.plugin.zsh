@@ -17,8 +17,8 @@ function main() {
     local remote="$REPLY"
 
     [[ ! -z "$remote" ]] \
-        && get_differences_between_remote_and_local \
-        && local remote_local_diffs="$REPLY"
+        && get_differences_between_remote_and_local "$branch" "$remote" \
+        && local commit_diffs="$REPLY"
 
     git_determine_color $modified $staged $deleted $untracked
     local color="$REPLY"
@@ -33,8 +33,8 @@ function main() {
         && untracked="?$untracked"
 
     local output="${color}"
-            output+=" $branch "
-            output+="$local_remote_diffs"
+            output+=" $branch"
+            output+="$commit_diffs"
             output+="$modified"
             output+="$staged"
             output+="$deleted"
@@ -105,11 +105,12 @@ function get_differences_between_remote_and_local()
     local differences="$(git rev-list --left-right --count $local_branch...$remote_branch)"
     local commits_ahead=$(echo -n "$differences" | awk '{print $1}')
     local commits_behind=$(echo -n "$differences" | awk '{print $2}')
+    local ahead="" behind=""
 
     (( $commits_ahead > 0 )) \
-        && local ahead="↑$commits_ahead"
+        && ahead="↑$commits_ahead"
     (( $commits_behind > 0 )) \
-        && local behind="↓$commits_behind"
+        && behind="↓$commits_behind"
 
     typeset -g REPLY="$ahead $behind"
     return 0
