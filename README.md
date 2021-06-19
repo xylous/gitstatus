@@ -1,14 +1,14 @@
 # gitstatus.zsh
 
-`gitstatus` is a zsh plugin that you can add to your prompt to help you see what
-you're doing in a git repository more easily.
+`gitstatus.zsh` is a plugin made for prompts - it tells you how many things have
+changed since the last git commit in a repository.
 
 ## Why such a thing?
 
 Frankly, it's because I needed something small and fast that would integrate
 well with my (multi-line) prompt.
 
-Is it useful? For myself at least, yes.
+Is it useful? For me and probably a handful other people, yes.
 
 ## Getting Started
 
@@ -36,26 +36,20 @@ Add the following lines to your zshrc:
 ```zsh
 function precmd()
 {
-    source path/to/installation/gitstatus.plugin.zsh
+    local gitstatus="$(path/to/installation/gitstatus.plugin.zsh)"
+    PS1="%F{blue}%~%F{default} $gitstatus $ "
 }
 ```
 
-`precmd()` is a zsh builtin that executes a series of commands right before the
-prompt is drawn.
+`precmd()` is a zsh builtin function that executes a series of commands right
+before the prompt is drawn. In this example, it updates the output of the
+`gitstatus` script and then uses it in a prompt.
 
-NOTE: you will have to redefine your prompt to include the variable
-`$GIT_STATUS`, which is exported to the environment by this plugin. Something
-like this:
-
-```zsh
-PS1="%F{blue}%~%F{default} $GIT_STATUS $ "
-```
+And of course, remember to replace `path/to/installation` with the actual path
+to the program.
 
 ## Roadmap
 
-- [ ] Find a way to not source the script every time a new prompt is
-drawn
-- [ ] Add bash support
 - [ ] Add screenshots
 
 ## Contributing
