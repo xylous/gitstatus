@@ -1,6 +1,7 @@
 #!/usr/bin/zsh
 
-function main() {
+function main()
+{
     is_in_git_repository || return 1
 
     parse_git_status
@@ -17,7 +18,7 @@ function main() {
     local remote="$REPLY"
 
     [[ ! -z "$remote" ]] \
-        && get_differences_between_remote_and_local "$branch" "$remote" \
+        && git_local_remote_diffs "$branch" "$remote" \
         && local commit_diffs="$REPLY"
 
     git_determine_color $modified $staged $deleted $untracked
@@ -46,19 +47,27 @@ function main() {
 
 ###
 # Check if we're in a git repository
-# Globals:      none
 # Arguments:    none
+# Returns:      0 if in a git repo, 1 otherwise
 ###
 function is_in_git_repository()
 {
     git rev-parse --git-dir &>/dev/null || return 1
 }
 
+###
+# Return current branch we're on
+# Arguments:    none
+###
 function git_grab_current_branch()
 {
     typeset -g REPLY="$(git branch --show-current)"
 }
 
+###
+# Return remote branch that the local one is tracking
+# Arguemnts: none
+###
 function git_grab_remote_branch()
 {
     local symbolic_ref="$(git symbolic-ref -q HEAD)"
@@ -66,8 +75,7 @@ function git_grab_remote_branch()
 }
 
 ###
-# Find how many things have changed since last commit
-# Globals:      none
+# Find how many things have changed since last git commit
 # Arguments:    none
 ###
 function parse_git_status()
@@ -97,7 +105,12 @@ function parse_git_status()
     return 0
 }
 
-function get_differences_between_remote_and_local()
+###
+# Look at how many commits a local branch is ahead/behind of remote branch
+# Arguments:    $1 local branch
+#               $2 remote branch
+###
+function git_local_remote_diffs()
 {
     local local_branch="$1"
     local remote_branch="$2"
@@ -116,15 +129,22 @@ function get_differences_between_remote_and_local()
     return 0
 }
 
+###
+# If there is anything that changed from the past commit, return yelllow color.
+# Otherwise, green.
+# Arguments:    list of how many things changed
+###
 function git_determine_color()
 {
+    local green=$'\e[93m'
+    local yellow=$'\e[92m'
     for i in "$@"; do
         if (( $i > 0 )); then
-            typeset -g REPLY=$'\e[93m'
+            typeset -g REPLY="$green"
             return 0
         fi
     done
-    typeset -g REPLY=$'\e[92m'
+    typeset -g REPLY="$yellow"
     return 0
 }
 
