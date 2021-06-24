@@ -43,6 +43,8 @@ function main()
             output+=$'\e[0m'
 
     sed 's/[ ]+$//' <<<"$output" # remove trailing whitespace
+
+    unset REPLY
 }
 
 ###
