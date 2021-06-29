@@ -33,8 +33,8 @@ function main()
     (( untracked > 0 )) \
         && untracked="?$untracked"
 
-    local output="${color}"
-            output+=" $branch"
+    local output="$color"
+            output+=" $branch "
             output+="$commit_diffs"
             output+="$modified"
             output+="$staged"
