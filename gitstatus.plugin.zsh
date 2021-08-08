@@ -1,6 +1,4 @@
-#!/usr/bin/zsh
-
-function main()
+function gitstatus()
 {
     is_in_git_repository || return 1
 
@@ -84,7 +82,7 @@ function parse_git_status()
 {
     git status --porcelain=v1 | while IFS= read -r status_line; do
         case "$status_line" in
-            ' M '*) 
+            ' M '*)
                 ((modified++))
                 ;;
             'A  '*|'M '*)
@@ -149,5 +147,3 @@ function git_determine_color()
     typeset -g REPLY="$yellow"
     return 0
 }
-
-main

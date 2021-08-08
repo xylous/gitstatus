@@ -31,9 +31,11 @@ git clone "https://github.com/xylous/gitstatus.zsh.git" gitstatus
 Add the following lines to your zshrc:
 
 ```zsh
+source path/to/installation/gitstatus.plugin.zsh
+
 function precmd()
 {
-    local gitstatus="$(path/to/installation/gitstatus.plugin.zsh)"
+    local gitstatus="$(gitstatus)"
     PS1="%F{blue}%~%F{default} ${gitstatus} $ "
 }
 ```
