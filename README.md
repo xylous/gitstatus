@@ -20,14 +20,11 @@ Is it useful? For me and probably a handful other people, yes.
 
 ### Installation
 
-Run the following command:
+Clone this repository locally, on your machine, for example:
 
 ```
-git clone https://github.com/Insert-Creative-Name-Here/gitstatus.zsh.git
+git clone "https://github.com/xylous/gitstatus.zsh.git" gitstatus
 ```
-
-You can move the downloaded repository anywhere you want on your computer
-afterwards.
 
 ## Usage
 
@@ -37,7 +34,7 @@ Add the following lines to your zshrc:
 function precmd()
 {
     local gitstatus="$(path/to/installation/gitstatus.plugin.zsh)"
-    PS1="%F{blue}%~%F{default} $gitstatus $ "
+    PS1="%F{blue}%~%F{default} ${gitstatus} $ "
 }
 ```
 
@@ -50,7 +47,8 @@ to the program.
 
 ## Roadmap
 
-- [ ] Add screenshots
+- [ ] add screenshots
+- [ ] cover more `git status` flags
 
 ## Contributing
 
