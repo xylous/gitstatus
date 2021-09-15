@@ -29,7 +29,7 @@ function gitstatus()
     (( deleted > 0 )) \
         && deleted="-$deleted "
     (( untracked > 0 )) \
-        && untracked="?$untracked"
+        && untracked="?$untracked "
 
     local output="$color"
             output+=" $branch "
@@ -38,9 +38,10 @@ function gitstatus()
             output+="$staged"
             output+="$deleted"
             output+="$untracked"
-            output+=$'%F{default}'
 
-    sed 's/[ ]+$//' <<<"$output" # remove trailing whitespace
+    local true_output="$(sed 's/[ \t]*$//' <<<"$output")" # remove trailing whitespace
+    true_output+=$'%F{default}'
+    echo "${true_output}"
 
     unset REPLY
 }
@@ -71,7 +72,7 @@ function git_grab_current_branch()
 function git_grab_remote_branch()
 {
     local symbolic_ref="$(git symbolic-ref -q HEAD)"
-    typeset -g REPLY="$(git for-each-ref --format='%(upstream:short)' $symbolic_ref)"
+    typeset -g REPLY="$(git for-each-ref --format='%(upstream:short)' "$symbolic_ref")"
 }
 
 ###
@@ -121,12 +122,15 @@ function git_local_remote_diffs()
     local ahead="" behind=""
 
     (( $commits_ahead > 0 )) \
-        && ahead=" ↑$commits_ahead"
+        && ahead="↑$commits_ahead"
     (( $commits_behind > 0 )) \
-        && behind=" ↓$commits_behind "
+        && behind="↓$commits_behind"
 
-    typeset -g REPLY="$ahead $behind"
-    return 0
+    if [[ ! -z "${ahead}" ]] || [[ ! -z "${behind}" ]]; then
+        typeset -g REPLY="$ahead $behind"
+        return 0
+    fi
+    return 1
 }
 
 ###
