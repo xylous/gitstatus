@@ -38,7 +38,7 @@ function gitstatus()
             output+="$staged"
             output+="$deleted"
             output+="$untracked"
-            output+=$'\e[0m'
+            output+=$'%F{default}'
 
     sed 's/[ ]+$//' <<<"$output" # remove trailing whitespace
 
@@ -136,8 +136,8 @@ function git_local_remote_diffs()
 ###
 function git_determine_color()
 {
-    local green=$'\e[93m'
-    local yellow=$'\e[92m'
+    local green=$'%F{yellow}'
+    local yellow=$'%F{green}'
     for i in "$@"; do
         if (( $i > 0 )); then
             typeset -g REPLY="$green"
