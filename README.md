@@ -3,6 +3,10 @@
 `gitstatus` is a plugin made for prompts - it tells you how many things have
 changed since the last git commit in a repository.
 
+Example with `PS1='%F{blue}%~%F{default} $(gitstatus) %F{green}$%F{default} '`:
+
+![](./screenshot.png)
+
 ## Why such a thing?
 
 Frankly, it's because I needed something small and fast that would integrate
@@ -61,7 +65,7 @@ to the program.
 
 ## Roadmap
 
-- [ ] add screenshots
+- [x] add screenshots
 - [ ] cover more `git status` flags
 
 ## Contributing
