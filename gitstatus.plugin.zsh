@@ -121,16 +121,22 @@ function git_local_remote_diffs()
     local commits_behind=$(echo -n "$differences" | awk '{print $2}')
     local ahead="" behind=""
 
+    local result=""
+
     (( $commits_ahead > 0 )) \
         && ahead="↑$commits_ahead"
     (( $commits_behind > 0 )) \
         && behind="↓$commits_behind"
 
-    if [[ ! -z "${ahead}" ]] || [[ ! -z "${behind}" ]]; then
-        typeset -g REPLY="$ahead $behind"
-        return 0
+    if [[ ! -z "${ahead}" ]]; then
+        result="${ahead} "
     fi
-    return 1
+
+    if [[ ! -z "${behind}" ]]; then
+        result="${behind} "
+    fi
+
+    typeset -g REPLY="${result}"
 }
 
 ###
