@@ -33,8 +33,11 @@ git clone "https://github.com/xylous/gitstatus.git" gitstatus
 ```
 
 ```zsh
-source path/to/installation/gitstatus.plugin.zsh
+source /path/to/installation/gitstatus.plugin.zsh
 ```
+
+And of course, remember to replace `/path/to/installation` with the actual path
+to the program.
 
 #### With a plugin manager
 
@@ -46,22 +49,16 @@ zpm load xylous/gitstatus
 
 ## Usage
 
-Add the following lines to your zshrc:
+Change your prompt to include `$(gitstatus)` wherever you need. Note that you'll
+need to `setopt PROMPT_SUBST` and that you're going to need to use single
+quotes.
+
+So, for example:
 
 ```zsh
-function precmd()
-{
-    local gitstatus="$(gitstatus)"
-    PS1="%F{blue}%~%F{default} ${gitstatus} $ "
-}
+setopt PROMPT_SUBST
+PROMPT='%F{blue}%~%F{default} $(gitstatus) $ '
 ```
-
-`precmd()` is a zsh builtin function that executes a series of commands right
-before the prompt is drawn. In this example, it updates the output of the
-`gitstatus` script and then uses it in a sample prompt.
-
-And of course, remember to replace `path/to/installation` with the actual path
-to the program.
 
 ## Roadmap
 
