@@ -1,3 +1,8 @@
+###
+# Print the final gitstatus prompt to stdout
+# Arguments:  $1 -i, if it's an inline prompt => add a whitespace at the end, if
+#                not empty
+###
 function gitstatus()
 {
     is_in_git_repository || return 1
@@ -40,6 +45,11 @@ function gitstatus()
             output+="$untracked"
 
     local true_output="$(sed 's/[ \t]*$//' <<<"$output")" # remove trailing whitespace
+
+    if [[ "$1" == "-i" ]]; then
+        true_output+=" "
+    fi
+
     true_output+=$'%F{default}'
     echo "${true_output}"
 
@@ -140,7 +150,7 @@ function git_local_remote_diffs()
 }
 
 ###
-# If there is anything that changed from the past commit, return yelllow color.
+# If there is anything that changed from the past commit, return yellow.
 # Otherwise, green.
 # Arguments:    list of how many things changed
 ###
