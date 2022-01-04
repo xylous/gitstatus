@@ -57,12 +57,19 @@ So, for example:
 
 ```zsh
 setopt PROMPT_SUBST
-PROMPT='%F{blue}%~%F{default} $(gitstatus) $ '
+PROMPT='%F{blue}%~%F{default} $(gitstatus -i)$ '
 ```
+
+### Options
+
+- `-i`: use if your prompt is inline. It appends a whitespace character if the
+output is non-empty; the formatting will always be proper, even if outside a git
+repository.
 
 ## Roadmap
 
 - [x] add screenshots
+- [x] have better support for inline prompts
 - [ ] cover more `git status` flags
 
 ## Contributing
