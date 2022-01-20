@@ -3,7 +3,7 @@
 `gitstatus` is a plugin made for prompts - it tells you how many things have
 changed since the last git commit in a repository.
 
-Example with `PS1='%F{blue}%~%F{default} $(gitstatus) %F{green}$%F{default} '`:
+Example with `PS1='%F{blue}%~%F{default} $(gitstatus -i)%F{green}$%F{default} '`:
 
 ![](./screenshot.png)
 
