@@ -99,7 +99,7 @@ function parse_git_status()
             'A  '*|'M '*)
                 ((staged++))
                 ;;
-            ' D '*)
+            'D  '*)
                 ((deleted++))
                 ;;
             '?? '*)
