@@ -105,7 +105,7 @@ function parse_git_status()
             '?? '*)
                 ((untracked++))
                 ;;
-            'MM '*)
+            'MM '*|'AM '*)
                 ((staged++))
                 ((modified++))
                 ;;
