@@ -1,7 +1,15 @@
+# gitstatus zsh plugin
+#   https://github.com/xylous/gistatus
+#
+# Code licensed under the MIT License
+#   https://raw.githubusercontent.com/xylous/gitstatus/master/LICENSE
+#
+# @author xylous <xylous.e@gmail.com>
+# @maintainer xylous <xylous.e@gmail.com>
+
 ###
-# Print the final gitstatus prompt to stdout
-# Arguments:  $1 -i, if it's an inline prompt => add a whitespace at the end, if
-#                not empty
+# Print a formatted gitstatus prompt to stdout
+# Options:  -i  add a whitespace at the end, if the output isn't empty
 ###
 function gitstatus()
 {
