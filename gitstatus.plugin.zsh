@@ -23,36 +23,36 @@ function gitstatus()
     unset STATUS
 
     git_grab_current_branch
-    local branch="$REPLY"
+    local branch="${REPLY}"
 
     git_grab_remote_branch
-    local remote="$REPLY"
+    local remote="${REPLY}"
 
     [[ ! -z "$remote" ]] \
         && git_local_remote_diffs "$branch" "$remote" \
         && local commit_diffs="$REPLY"
 
-    git_determine_color $modified $staged $deleted $untracked
-    local color="$REPLY"
+    git_determine_color ${modified} ${staged} ${deleted} ${untracked}
+    local color="${REPLY}"
 
     (( modified > 0 )) \
-        && modified="!$modified "
+        && modified="!${modified} "
     (( staged > 0 )) \
-        && staged="+$staged "
+        && staged="+${staged} "
     (( deleted > 0 )) \
-        && deleted="-$deleted "
+        && deleted="-${deleted} "
     (( untracked > 0 )) \
-        && untracked="?$untracked "
+        && untracked="?${untracked} "
 
     local output="$color"
-            output+=" $branch "
-            output+="$commit_diffs"
-            output+="$modified"
-            output+="$staged"
-            output+="$deleted"
-            output+="$untracked"
+            output+=" ${branch} "
+            output+="${commit_diffs}"
+            output+="${modified}"
+            output+="${staged}"
+            output+="${deleted}"
+            output+="${untracked}"
 
-    local true_output="$(sed 's/[ \t]*$//' <<<"$output")" # remove trailing whitespace
+    local true_output="$(sed 's/[ \t]*$//' <<<"${output}")" # remove trailing whitespace
 
     if [[ "$1" == "-i" ]]; then
         true_output+=" "
@@ -90,7 +90,7 @@ function git_grab_current_branch()
 function git_grab_remote_branch()
 {
     local symbolic_ref="$(git symbolic-ref -q HEAD)"
-    typeset -g REPLY="$(git for-each-ref --format='%(upstream:short)' "$symbolic_ref")"
+    typeset -g REPLY="$(git for-each-ref --format='%(upstream:short)' "${symbolic_ref}")"
 }
 
 ###
@@ -120,7 +120,7 @@ function parse_git_status()
         esac
     done
 
-    typeset -g STATUS=("$modified" "$staged" "$deleted" "$untracked")
+    typeset -g STATUS=("${modified}" "${staged}" "${deleted}" "${untracked}")
     return 0
 }
 
@@ -134,17 +134,17 @@ function git_local_remote_diffs()
     local local_branch="$1"
     local remote_branch="$2"
 
-    local differences="$(git rev-list --left-right --count $local_branch...$remote_branch)"
-    local commits_ahead=$(echo -n "$differences" | awk '{print $1}')
-    local commits_behind=$(echo -n "$differences" | awk '{print $2}')
+    local differences="$(git rev-list --left-right --count ${local_branch}...${remote_branch})"
+    local commits_ahead=$(echo -n "${differences}" | awk '{print $1}')
+    local commits_behind=$(echo -n "${differences}" | awk '{print $2}')
     local ahead="" behind=""
 
     local result=""
 
     (( $commits_ahead > 0 )) \
-        && ahead="↑$commits_ahead"
+        && ahead="↑${commits_ahead}"
     (( $commits_behind > 0 )) \
-        && behind="↓$commits_behind"
+        && behind="↓${commits_behind}"
 
     if [[ ! -z "${ahead}" ]]; then
         result="${ahead} "
@@ -164,14 +164,12 @@ function git_local_remote_diffs()
 ###
 function git_determine_color()
 {
-    local green=$'%F{yellow}'
-    local yellow=$'%F{green}'
     for i in "$@"; do
         if (( $i > 0 )); then
-            typeset -g REPLY="$green"
+            typeset -g REPLY=$'${yellow}'
             return 0
         fi
     done
-    typeset -g REPLY="$yellow"
+    typeset -g REPLY=$'${green}'
     return 0
 }
