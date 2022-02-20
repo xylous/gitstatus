@@ -44,7 +44,7 @@ function gitstatus()
     (( untracked > 0 )) \
         && untracked="?${untracked} "
 
-    local output="$color"
+    local output="${color}"
             output+=" ${branch} "
             output+="${commit_diffs}"
             output+="${modified}"
@@ -166,10 +166,10 @@ function git_determine_color()
 {
     for i in "$@"; do
         if (( $i > 0 )); then
-            typeset -g REPLY=$'${yellow}'
+            typeset -g REPLY=$'%F{yellow}'
             return 0
         fi
     done
-    typeset -g REPLY=$'${green}'
+    typeset -g REPLY=$'%F{green}'
     return 0
 }
