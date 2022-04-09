@@ -117,6 +117,10 @@ function parse_git_status()
                 ((staged++))
                 ((modified++))
                 ;;
+            'R '*)
+                ((staged++))
+                ((deleted++))
+                ;;
         esac
     done
 
