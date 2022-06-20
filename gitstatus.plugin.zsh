@@ -32,7 +32,7 @@ function gitstatus()
         && git_local_remote_diffs "$branch" "$remote" \
         && local commit_diffs="$REPLY"
 
-    git_determine_color ${modified} ${staged} ${deleted} ${untracked}
+    git_determine_color $((modified + staged + deleted + untracked))
     local color="${REPLY}"
 
     (( modified > 0 )) \
@@ -168,12 +168,9 @@ function git_local_remote_diffs()
 ###
 function git_determine_color()
 {
-    for i in "$@"; do
-        if (( $i > 0 )); then
-            typeset -g REPLY=$'%F{yellow}'
-            return 0
-        fi
-    done
-    typeset -g REPLY=$'%F{green}'
-    return 0
+    if (( $1 > 0 )); then
+        typeset -g REPLY=$'%F{yellow}'
+    else
+        typeset -g REPLY=$'%F{green}'
+    fi
 }
